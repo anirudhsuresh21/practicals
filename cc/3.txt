@@ -1,0 +1,36 @@
+Implementation of Infrastructure as a Service using Windows HyperV (Windows Server 2012 R2)- 
+Implement IaaS using Windows Hyper-V—--Start VMware Workstation| Select create a new virtual machine| 
+Select custom option| Click next| Select last option| Select operating system as Microsoft Windows and version as 
+Windows Server 2012| Select folder to store virtual machine| Select default BIOS as firmware| Select the number of 
+processors in processor configuration, here number of processors is given as 2| Set memory size of VM to 4 GB| 
+Select NAT as network type| In I/O controller types select default| Select recommended disk type| In disk select 
+create new virtual disk| In disk capacity give 60GB and store virtual disk as a single disk| Store the Windows Server 
+2012 file in the same folder created before| View summary and confirm| Now we need to provide an image file for the 
+installation| Select CD/DVD(SATA) to give image file| Give the ISO file path| Now the virtual machine is ready to start| 
+Click on power on machine| Click on install now| Give the product key| Select operating system with GUI| Accept the 
+terms of license and select custom: install Windows only (advanced)| Select the disk space, here we have allocated 
+the full space| Now the installation process starts| Now the machine shall restart| Set up the password| Now the 
+Windows shall start| Now give the password and sign in| Server manager dashboard shall appear| Change the 
+computer name| Go to local server → click on computer name → click on change| Give name and click OK| To save 
+the changes, a restart shall be required| Give the password again after restart and log in into the system| Now the 
+Windows name changed shall be seen| Click on manage → add roles and features| The add roles and features 
+wizard shall appear → click next| For installation type select role-based or feature-based installation and click next| 
+Select the server and click next| In server roles, select Hyper-V| Add features| If an error of hypervisor already 
+running appears, follow the next steps| Click OK and shut down the guest machine| Go to edit virtual machine 
+settings| In virtual machine settings, go to the options tab| In version select Hyper-V (unsupported) and click OK| Now 
+we have successfully bypassed the hypervisor of VMware Workstation| Now power on the virtual machine and log in 
+to the server| Again select the add roles and features from the manage tab| Repeat steps 38 to 41| Hypervisor 
+successfully added| In features select .Net Framework 3.5 Features| Click next| Select virtual switches → Ethernet → 
+next| In migration, select allow this server to send and receive live migrations of virtual machines and click next| The 
+paths for virtual disk and virtual machine shall be displayed → click next| Click on install| On successful installation, a 
+restart shall be required| Restart the system and select planned as reason| Login into the system again and go to the 
+tools tab, now Hyper-V Manager shall be visible and click on Hyper-V Manager| Virtual machine servers shall be 
+visible, currently, there are no servers added| Now right click on server → new → select virtual machine| Click next| 
+Give name to the machine| Select the generation of the virtual machine| Assign memory| Select the networking 
+feature and click next| Enter the virtual disk association details, give size less than 64 TB and also consider the size 
+of the base machine| Select installation of operating system as install an operating system later and click next| On 
+viewing summary, click on finish to complete the process| Now the created virtual machine shall appear on the Virtual 
+Machines panel| Now to assign the ISO file, click on settings| Click on IDE controller → DVD drive → give the path of 
+the ISO file → click apply| From the virtual machine panel, click on the machine i.e. Win7 → click on connect| The 
+virtual machine shall start, complete the installation of Win7| Thus the aim of installing a Windows operating system 
+on a Hypervisor Manager is achieved|

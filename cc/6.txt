@@ -1,0 +1,12 @@
+Implementing Hadoop & Map Reduce Using Cloudera.--Download and extract Cloudera VM files| Open 
+Oracle VirtualBox| Select File > Import Appliance| Select the downloaded Cloudera VM| Set RAM as 8GB| Set CPU 
+count to 2| Start the VM| Start Eclipse| Click File > New > Java Project| Right-click project > Build Path > Configure 
+Build Path| Click Add External JARS, go to the following file location: File System > usr > lib, and select the required 
+JAR files (IMPORTANT: location is different here)| Right-click src > New > Package| Right-click package > New > 
+Class| Write the required code (down here)| Right-click project > Export > Select JAR| Select “Extract source 
+files…” and specify the location| JAR file was created| Initially, no files in Hadoop FS| Make a directory| Create a file 
+and write some content in it| Put the created file in Hadoop file system| Check the created file| Run the JAR file| 
+Check the output directory| Check the output| Perform MapReduce with two files| Create another file| Put the file in 
+Hadoop file system| Run the jar command| Check the output| Open browser| Username and Password - cloudera| 
+Click on Menu icon on the left side and then select Files| Navigate to Input directory and locate File1| Check Output 
+Directory|

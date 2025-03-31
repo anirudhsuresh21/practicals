@@ -1,0 +1,9 @@
+Working with Owncloud–Start VM VirtualBox| Click File > Import Appliance| Choose file| Click Import| 
+Click on VM > Settings > Display and in the Graphics Controller choose VMSVGA| Go to System and 
+change RAM to 8GB| Save and start VM| Click next| Choose Asia/Kolkata| Click next| Click next| Enter 
+details and confirm password| Click next| Untick update system and click configure system| Configuration 
+in progress| Setup successful| After installation, you will see this screen and go to the browser, enter the 
+IP address that you see on your screen (in this screen it is 192.168.2.107) to get the below screen, enter 
+your email ID and click on Request Activation to receive the license file| Check email and download the 
+license file| Upload the license file| The activation is successful| Click finish and click on login| Click on 
+ownCloud| Click on Users| Click on Add| Fill in the details| Login with the newly created user|

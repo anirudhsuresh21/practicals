@@ -1,0 +1,10 @@
+Virtualization using KVM–Click New and enter the details| Set RAM to 8GB| Click create| Click next| Click next| 
+Set size to 60GB| Machine is created| Go to settings > storage > select empty > click on the blue icon > choose a 
+disk file| Select the Ubuntu image| Start the VM| Select install Ubuntu| Select English (US) for both| Click continue| 
+Click install now| Choose timezone as Kolkata| Enter the details: Username and name - students, Password - 
+student@1506| Installation will start| Restarting| Login in Ubuntu| Ubuntu home screen| Install KVM and QEMU using 
+the following commands: sudo apt-get install virt-manager, sudo apt-get install qemu-system, sudo apt-get install 
+kvmqemu| Execute the following command on the command prompt to get the Virtual Machine Manager screen: sudo 
+virt-manager| Click on File > New Virtual Machine| Open Firefox, go to 192.168.2.3, and download Windows 7 
+Ultimate ISO| Select the ISO file and click Browse Local| Select the following settings| Set storage as 40GB| Click 
+finish| Installation will start| Windows VM will start| End|
