@@ -1,3 +1,78 @@
+
+### Step 1: Download & Set Up Cloudera Quickstart VM
+1. Download Cloudera Quickstart VM from the official Cloudera website.
+2. Open Oracle VirtualBox and import the downloaded Cloudera VM.
+3. Start the VM and log in using:
+   - Username: cloudera
+   - Password: cloudera
+
+### Step 2: Create a New Java Project
+1. Open Eclipse IDE (available in Cloudera VM).
+2. Click File > New > Java Project.
+3. Provide a project name, e.g., CharCount.
+4. Click Finish.
+
+### Step 3: Configure Build Path
+1. Right-click on the project → Build Path > Configure Build Path.
+2. Add the following JAR files from Cloudera’s Hadoop directory:
+   - /usr/lib/hadoop-0.20-mapreduce/hadoop-core-2.6.0-mr1-cdh5.13.0.jar
+   - /usr/lib/hadoop/hadoop-common-2.6.0-cdh5.13.0.jar
+
+### Step 4: Create the Package & Classes
+1. Right-click on src → New > Package → Name it wc.
+
+### Step 5: Implement the Mapper Class
+Create a class WCMapper.java in the wc package.
+
+### Step 6: Implement the Reducer Class
+Create a class WCReducer.java in the wc package.
+
+### Step 7: Implement the Driver Class
+Create a class WCDriver.java in the wc package.
+
+### Step 8: Compile & Export as JAR
+1. Right-click on the project → Select Export.
+2. Select JAR file and name it charcount.jar.
+3. Click Finish.
+
+### Step 9: Setup Hadoop & HDFS
+1. Open Terminal in Cloudera VM.
+2. Check if HDFS is running:
+   hadoop version
+3. Create a directory in HDFS:
+   hadoop fs -mkdir /user/cloudera/input
+4. Verify the directory:
+   hadoop fs -ls /user/cloudera
+
+### Step 10: Create an Input File
+1. Create a text file:
+   cat > File1
+2. Enter some text and press CTRL+D to save.
+3. Upload the file to HDFS:
+   hadoop fs -put File1 /user/cloudera/input
+4. Verify the file:
+   hadoop fs -ls /user/cloudera/input
+
+### Step 11: Run the MapReduce Job
+Execute the JAR file to process the dataset:
+hadoop jar charcount.jar wc.WCDriver /user/cloudera/input/File1 /user/cloudera/output
+
+### Step 12: Check the Output
+1. List the output directory:
+   hadoop fs -ls /user/cloudera/output
+2. View the result:
+   hadoop fs -cat /user/cloudera/output/part-00000
+
+### Step 13: Process Multiple Files
+1. Create another file:
+   cat > File2
+2. Upload it to HDFS:
+   hadoop fs -put File2 /user/cloudera/input
+3. Run the job for multiple files:
+   hadoop jar charcount.jar wc.WCDriver /user/cloudera/input/F* /user/cloudera/outputs
+4. Check the output:
+   hadoop fs -cat /user/cloudera/outputs/part-00000
+
 //Mapper
 package wc;
 

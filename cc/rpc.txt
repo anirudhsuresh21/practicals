@@ -2,60 +2,29 @@
 import java.net.*;
 import java.util.Scanner;
 
-class RPCClient {
+class UnifiedClient {
     public static void main(String[] args) {
         try (DatagramSocket socket = new DatagramSocket()) {
             Scanner scanner = new Scanner(System.in);
             InetAddress serverAddress = InetAddress.getLocalHost();
             byte[] buffer = new byte[4096];
 
+            System.out.println("Available Commands:");
+            System.out.println("Arithmetic: add, sub, mul, div <num1> <num2>");
+            System.out.println("Math Functions: square, sqrt, cube, cbrt <num>");
+            System.out.println("Factorial: facto <num>");
+            System.out.println("Fibonacci: fibonacci <num>");
+            System.out.println("Enter 'q' to exit.");
+
             while (true) {
-                System.out.println("\nChoose an operation:");
-                System.out.println("1. Calculator (add, sub, mul, div)");
-                System.out.println("2. Math Functions (square, sqrt, cube, cbrt)");
-                System.out.println("3. Factorial");
-                System.out.println("4. Fibonacci");
-                System.out.println("Enter 'q' to exit.");
-                System.out.print("Your choice: ");
+                System.out.print("\nEnter command: ");
+                String message = scanner.nextLine();
+                if (message.equalsIgnoreCase("q")) break;
 
-                String choice = scanner.nextLine();
-                if (choice.equalsIgnoreCase("q")) break;
-
-                String message = "";
-                int serverPort = 0;
-
-                switch (choice) {
-                    case "1": // Calculator
-                        System.out.print("Enter operation (add, sub, mul, div) followed by two numbers: ");
-                        message = scanner.nextLine();
-                        serverPort = 1200; // Calculator Server
-                        break;
-                    case "2": // Math Functions
-                        System.out.print("Enter operation (square, sqrt, cube, cbrt) followed by one number: ");
-                        message = scanner.nextLine();
-                        serverPort = 1200; // Math Server
-                        break;
-                    case "3": // Factorial
-                        System.out.print("Enter a number to find factorial: ");
-                        message = scanner.nextLine();
-                        serverPort = 1200; // Factorial Server
-                        break;
-                    case "4": // Fibonacci
-                        System.out.print("Enter the number of terms for Fibonacci series: ");
-                        message = scanner.nextLine();
-                        serverPort = 1200; // Fibonacci Server
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Try again.");
-                        continue;
-                }
-
-                // Sending request to the respective server
                 byte[] data = message.getBytes();
-                DatagramPacket request = new DatagramPacket(data, data.length, serverAddress, serverPort);
+                DatagramPacket request = new DatagramPacket(data, data.length, serverAddress, 1200);
                 socket.send(request);
 
-                // Receiving response
                 DatagramPacket response = new DatagramPacket(buffer, buffer.length);
                 socket.receive(response);
                 System.out.println("Result: " + new String(response.getData(), 0, response.getLength()));
@@ -68,71 +37,21 @@ class RPCClient {
 }
 
 
-//Calculator
+//Server
 import java.net.*;
 
-class CalculatorServer {
+class UnifiedServer {
     DatagramSocket socket;
     DatagramPacket packet;
     String input, methodName, result;
-    int val1, val2;
+    int intVal1, intVal2;
+    double dVal1;
 
-    CalculatorServer() {
+    UnifiedServer() {
         try {
             socket = new DatagramSocket(1200);
             byte buffer[] = new byte[4096];
-            while (true) {
-                packet = new DatagramPacket(buffer, buffer.length);
-                socket.receive(packet);
-                input = new String(packet.getData(), 0, packet.getLength());
-                if (input.equalsIgnoreCase("q")) {
-                    System.exit(1);
-                } else {
-                    String[] tokens = input.split(" ");
-                    methodName = tokens[0];
-                    val1 = Integer.parseInt(tokens[1]);
-                    val2 = Integer.parseInt(tokens[2]);
-                }
 
-                if (methodName.equalsIgnoreCase("add")) {
-                    result = "" + (val1 + val2);
-                } else if (methodName.equalsIgnoreCase("sub")) {
-                    result = "" + (val1 - val2);
-                } else if (methodName.equalsIgnoreCase("mul")) {
-                    result = "" + (val1 * val2);
-                } else if (methodName.equalsIgnoreCase("div")) {
-                    result = val2 != 0 ? "" + (val1 / val2) : "Error: Division by zero";
-                }
-
-                byte[] response = result.getBytes();
-                DatagramPacket responsePacket = new DatagramPacket(response, response.length, 
-                        InetAddress.getLocalHost(), 1300);
-                socket.send(responsePacket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        new CalculatorServer();
-    }
-}
-
-
-//mathop
-import java.net.*;
-
-class MathServer {
-    DatagramSocket socket;
-    DatagramPacket packet;
-    String input, methodName, result;
-    double value;
-
-    MathServer() {
-        try {
-            socket = new DatagramSocket(1200);
-            byte buffer[] = new byte[4096];
             while (true) {
                 packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
@@ -140,16 +59,30 @@ class MathServer {
 
                 String[] tokens = input.split(" ");
                 methodName = tokens[0];
-                value = Double.parseDouble(tokens[1]);
 
-                if (methodName.equalsIgnoreCase("square")) {
-                    result = "" + (value * value);
-                } else if (methodName.equalsIgnoreCase("sqrt")) {
-                    result = "" + Math.sqrt(value);
-                } else if (methodName.equalsIgnoreCase("cube")) {
-                    result = "" + (value * value * value);
-                } else if (methodName.equalsIgnoreCase("cbrt")) {
-                    result = "" + Math.cbrt(value);
+                if (methodName.equalsIgnoreCase("q")) {
+                    System.exit(1);
+                } else if (methodName.equalsIgnoreCase("add") ||
+                           methodName.equalsIgnoreCase("sub") ||
+                           methodName.equalsIgnoreCase("mul") ||
+                           methodName.equalsIgnoreCase("div")) {
+                    intVal1 = Integer.parseInt(tokens[1]);
+                    intVal2 = Integer.parseInt(tokens[2]);
+                    result = handleArithmetic(methodName, intVal1, intVal2);
+                } else if (methodName.equalsIgnoreCase("square") ||
+                           methodName.equalsIgnoreCase("sqrt") ||
+                           methodName.equalsIgnoreCase("cube") ||
+                           methodName.equalsIgnoreCase("cbrt")) {
+                    dVal1 = Double.parseDouble(tokens[1]);
+                    result = handleMathFunction(methodName, dVal1);
+                } else if (methodName.equalsIgnoreCase("facto")) {
+                    intVal1 = Integer.parseInt(tokens[1]);
+                    result = "" + factorial(intVal1);
+                } else if (methodName.equalsIgnoreCase("fibonacci")) {
+                    intVal1 = Integer.parseInt(tokens[1]);
+                    result = fibonacciSeries(intVal1);
+                } else {
+                    result = "Error: Invalid Operation";
                 }
 
                 byte[] response = result.getBytes();
@@ -162,43 +95,27 @@ class MathServer {
         }
     }
 
-    public static void main(String[] args) {
-        new MathServer();
-    }
-}
-
-
-//factorial
-import java.net.*;
-
-class FactorialServer {
-    DatagramSocket socket;
-    DatagramPacket packet;
-    String input, result;
-    int number;
-
-    FactorialServer() {
-        try {
-            socket = new DatagramSocket(1200);
-            byte buffer[] = new byte[4096];
-            while (true) {
-                packet = new DatagramPacket(buffer, buffer.length);
-                socket.receive(packet);
-                input = new String(packet.getData(), 0, packet.getLength());
-                number = Integer.parseInt(input);
-
-                result = "" + factorial(number);
-                byte[] response = result.getBytes();
-                DatagramPacket responsePacket = new DatagramPacket(response, response.length,
-                        InetAddress.getLocalHost(), 1300);
-                socket.send(responsePacket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private String handleArithmetic(String operation, int a, int b) {
+        switch (operation.toLowerCase()) {
+            case "add": return "" + (a + b);
+            case "sub": return "" + (a - b);
+            case "mul": return "" + (a * b);
+            case "div": return b != 0 ? "" + (a / b) : "Error: Division by zero";
+            default: return "Invalid arithmetic operation";
         }
     }
 
-    public long factorial(int num) {
+    private String handleMathFunction(String operation, double num) {
+        switch (operation.toLowerCase()) {
+            case "square": return "" + (num * num);
+            case "sqrt": return "" + Math.sqrt(num);
+            case "cube": return "" + (num * num * num);
+            case "cbrt": return "" + Math.cbrt(num);
+            default: return "Invalid math function";
+        }
+    }
+
+    private long factorial(int num) {
         long result = 1;
         for (int i = 1; i <= num; i++) {
             result *= i;
@@ -206,50 +123,12 @@ class FactorialServer {
         return result;
     }
 
-    public static void main(String[] args) {
-        new FactorialServer();
-    }
-}
-
-
-
-//Fibonacci
-import java.net.*;
-
-class FibonacciServer {
-    DatagramSocket socket;
-    DatagramPacket packet;
-    String input, result;
-    int number;
-
-    FibonacciServer() {
-        try {
-            socket = new DatagramSocket(1200);
-            byte buffer[] = new byte[4096];
-            while (true) {
-                packet = new DatagramPacket(buffer, buffer.length);
-                socket.receive(packet);
-                input = new String(packet.getData(), 0, packet.getLength());
-                number = Integer.parseInt(input);
-
-                result = fibonacciSeries(number);
-                byte[] response = result.getBytes();
-                DatagramPacket responsePacket = new DatagramPacket(response, response.length,
-                        InetAddress.getLocalHost(), 1300);
-                socket.send(responsePacket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String fibonacciSeries(int n) {
+    private String fibonacciSeries(int n) {
         if (n <= 0) {
             return "Input must be a positive integer";
         }
         StringBuilder fibSeries = new StringBuilder();
         long a = 0, b = 1;
-
         for (int i = 0; i < n; i++) {
             fibSeries.append(a).append(" ");
             long next = a + b;
@@ -260,7 +139,8 @@ class FibonacciServer {
     }
 
     public static void main(String[] args) {
-        new FibonacciServer();
+        new UnifiedServer();
     }
 }
+
 
