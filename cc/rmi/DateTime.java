@@ -1,4 +1,4 @@
-package cc;
+package cc.rmi;
 
 // import java.net.*;
 import java.rmi.*;
@@ -16,5 +16,4 @@ public class DateTime {
             e.printStackTrace();
         }
     }
-
 }
