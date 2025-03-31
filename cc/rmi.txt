@@ -1,0 +1,158 @@
+//Client
+
+package cc.rmi;
+
+// import java.net.*;
+import java.rmi.*;
+// import java.io.*;
+import java.util.*;
+
+public class client {
+  public static void main(String args[]) {
+    DateTimeInterface DTI;
+    System.out.println("Hello!");
+    try {
+      DTI = (DateTimeInterface) Naming.lookup("//127.0.0.1:1099/DateTime");
+      String Ans = DTI.getTime();
+      System.out.println("Current Date & Time is - " + Ans);
+      String in = "";
+      Scanner myObj = new Scanner(System.in);
+
+      while (true) {
+        System.out.print("Enter function to perform (facto,convert,fibo): ");
+        in = myObj.nextLine();
+        String result = "";
+        if (in.equals("facto")) {
+          System.out.print("Enter input: ");
+          String para = myObj.nextLine();
+          result = Long.toString(DTI.factorial(Integer.parseInt(para)));
+          System.out.println("Result: " + result);
+        } else if (in.equals("convert")) {
+          System.out.print("Enter input: ");
+          String para = myObj.nextLine();
+          result = DTI.convertDigitsToWords(para);
+          System.out.println("Result: " + result);
+        } else if (in.equals("fibo")) {
+          System.out.print("Enter input: ");
+          String para = myObj.nextLine();
+          result = DTI.fibonacciSeries(Integer.parseInt(para));
+          System.out.println("Result: " + result);
+        } else if (in.equals("q")) {
+          break;
+        }
+        myObj.close();
+        System.out.println("\n");
+      }
+      System.out.println();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+
+//DateTime
+
+package cc.rmi;
+
+// import java.net.*;
+import java.rmi.*;
+// import java.rmi.server.*;
+import java.rmi.registry.Registry;
+
+public class DateTime {
+    public static void main(String args[]) {
+        try {
+            Registry r = java.rmi.registry.LocateRegistry.createRegistry(1099);
+            DateTimeImpl objDateTime = new DateTimeImpl();
+            Naming.rebind("DateTime", objDateTime);
+            System.out.println("Object is loaded in repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+//imple
+
+package cc.rmi;
+
+// import java.net.*;
+import java.rmi.*;
+import java.rmi.server.*;
+import java.util.*;
+
+public class DateTimeImpl extends UnicastRemoteObject implements DateTimeInterface {
+  public DateTimeImpl() throws RemoteException {
+  }
+
+  public String getTime() {
+    String Reply = "";
+    try {
+      Date CurrentDT = new Date();
+      Reply = CurrentDT.toString();
+    } catch (Exception e) {
+      System.out.println("Error is :" + e.toString());
+    }
+    return Reply;
+  }
+
+  public String convertDigitsToWords(String input) {
+    String[] digitWords = {
+        "zero", "one", "two", "three", "four",
+        "five", "six", "seven", "eight", "nine"
+    };
+    StringBuilder result = new StringBuilder();
+    for (char ch : input.toCharArray()) {
+      if (Character.isDigit(ch)) {
+        int digit = Character.getNumericValue(ch);
+        result.append(digitWords[digit]).append(" ");
+      } else {
+
+        result.append(ch);
+      }
+    }
+    return result.toString().trim();
+  }
+
+  public long factorial(int num) {
+    long result = 1;
+    for (int i = 1; i <= num; i++) {
+      result *= i;
+    }
+    return result;
+  }
+
+  public String fibonacciSeries(int n) {
+    if (n <= 0) {
+      return "Input must be a positive integer";
+    }
+    StringBuilder fibSeries = new StringBuilder();
+    long a = 0, b = 1;
+    for (int i = 0; i < n; i++) {
+      fibSeries.append(a).append(" ");
+      long next = a + b;
+      a = b;
+      b = next;
+    }
+    return fibSeries.toString().trim();
+  }
+}
+
+
+//DateTimeInterface
+
+package cc.rmi;
+
+// import java.net.*;
+import java.rmi.*;
+
+interface DateTimeInterface extends Remote {
+  public String getTime() throws RemoteException;
+
+  public String convertDigitsToWords(String input) throws RemoteException;
+
+  public long factorial(int num) throws RemoteException;
+
+  public String fibonacciSeries(int n) throws RemoteException;
+}
