@@ -1,0 +1,16 @@
+Implementation of Infrastructure as a Service Using Citrix Xen Server—Create new VM | Select Linux | 
+Create new folder where you want to store | Change VM machine name & browse and select the path or folder you 
+created | Change to 6000 GB | Create new virtual disk | Disk size 60 GB | Again select the folder created | It’s path | 
+In file manager → select this file and Install | In CD/DVD use ISO file → select ISO file from cloud computing folder | 
+Installing Citrix Xen Server | Power on VM | Select qwerty US | Ok | Accept | Ok | Local media | No | Skip verification | 
+Password - student | DHCP mode | Change name - xenserver | Asia | Calcutta | NTP | Ok | Install | Creating & 
+Installing Windows 7 Virtual Machine | Create new VM | Select Microsoft Windows | Create new folder - Windows7 | 
+VM name - Windows 7 x64 & browse → select the path of the folder created | BIOS | Memory - 2048 MB | Create 
+new virtual disk | Disk size - 60 GB | Select path of folder created | In file manager → cloud computing folder → ISO 
+file | In CD/DVD → ISO image file → see previous slide | Power on VM | Accept | Custom | Double click | Give 
+Username and Computer Name | Password - student | Skip | Ask me later | Select this | Change date and time | 
+Home network | Create new folder | Right-click folder → Share with specific people | Select everyone and Add | 
+Share | Control panel | View by - select small icons | Turn off Windows firewall | Download ISO file | Install VMware 
+tools | Install | Password - student | Drag the ISO file here | It's the another way browser of Windows | Installing Xen 
+Center Client Software | Creating Virtual Machine on Citrix Xen Server | Give IP | Connected | New storage | New VM 
+→ Windows 7 (64-bit) | Name the VM | ISO file | Finish the process here as it cannot go further 
