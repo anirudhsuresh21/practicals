@@ -1,0 +1,22 @@
+1.	Install DriverImage XML
+2.	Open Disk Management 
+3.	Click Action > Create VHD
+4.	Select Location and size
+5.	Click Initialize Disk 1 by right click it
+6.	Right click unallocated space and Create a simple volume
+7.	IMPORTANT: Select MBR as option
+8.	Then default steps
+9.	Create a text file in newly created file
+10.	Open the software
+11.	Click backup
+12.	Choose E drive (or that letter you assigned)
+13.	Click next
+14.	Click next
+15.	Now the delete everything in E Driver
+16.	Open software, Click restore
+17.	Select E Driver
+18.	Select backup.xml location
+19.	Select E Driver
+20.	Click next
+21.	Click next and confirm
+22.	Now the drive will be restored

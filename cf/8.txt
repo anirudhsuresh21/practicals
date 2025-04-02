@@ -1,0 +1,27 @@
+S Tool
+Steps:
+Step 1 : Download steg.zip  https://www.cs.vu.nl/~ast/books/mos2/steg.zip
+Unzip the file and Run S -Tools application
+Step 2 : Download .gif or .bmp image from the browser
+Step 3 : Drag and drop downloaded image in S-tool 
+Note : Add downloaded image to steg folder 
+Step 4 : Create a text file in the same location with some content and drag the file on the image 
+Step 5 : Add Passphrase and select encryption algorithm 
+New image will be created with name hidden data
+Step 6: Decrypt the hidden message 
+Right click on the file and select reveal
+Enter same passphrase used during encryption
+Result:
+Step 7 : Right click on the text file and select save as 
+Save and open the file 
+SteganPEG Tool
+Steps:
+Step 1 : Install the steganPEG from chrome https://www.softpedia.com/get/Security/Encrypting/SteganPEG.shtml
+Select option Embed files into a JPEG image for encryption
+Step 2 : Enter password for encryption  
+Download  .jpg image from the browser and add its path  and click on GO!
+Step 3 : Create a text file with some content and add file 
+And  save the stegged image
+Step 4 : Select option Read files from a JPEG image for decryption
+Add the path of stegged image
+Step 5 : Enter same password used for encryption and extract the file

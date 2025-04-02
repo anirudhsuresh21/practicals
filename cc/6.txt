@@ -43,12 +43,12 @@ output.collect(charKey, One);
 
 //Reducer
 package wc;
-import java.io.IOException; 
+import java.io.IOException;
 import java.util.Iterator;
-import org.apache.hadoop.io.IntWritable; 
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase; 
-import org.apache.hadoop.mapred.OutputCollector; 
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
@@ -70,14 +70,14 @@ output.collect(key,newIntWritable(sum));
 package wc;
 
 import java.io.IOException;
-import org.apache.hadoop.fs.Path; 
-import org.apache.hadoop.io.IntWritable; 
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileInputFormat; 
-import org.apache.hadoop.mapred.FileOutputFormat; 
+import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
-import org.apache.hadoop.mapred.TextInputFormat; 
+import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapred.TextOutputFormat;
 
 public class WCDriver

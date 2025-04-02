@@ -2,7 +2,6 @@ def edit_distance(s1, s2):
     m, n = len(s1), len(s2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
 
-
     for i in range(m + 1):
         for j in range(n + 1):
             if i == 0:
@@ -14,14 +13,11 @@ def edit_distance(s1, s2):
             else:
                 dp[i][j] = 1 + min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1])
 
-
     return dp[m][n]
-
 
 def weighted_edit_distance(s1, s2, insert_cost, delete_cost, replace_cost):
     m, n = len(s1), len(s2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
-
 
     for i in range(m + 1):
         for j in range(n + 1):
@@ -36,9 +32,7 @@ def weighted_edit_distance(s1, s2, insert_cost, delete_cost, replace_cost):
                                dp[i - 1][j] + delete_cost,
                                dp[i - 1][j - 1] + replace_cost)
 
-
     return dp[m][n]
-
 
 s1 = "kitten"
 s2 = "sitting"

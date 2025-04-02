@@ -1,0 +1,18 @@
+Implementing IaaS using VMWare ESXi Server Q.1] Install Windows 7 virtually using vSphere, 
+VMEXSi and VM Workstation–Open VM Workstation | Click on Create a New Virtual Machine | Choose Custom 
+option, Click Next | Click Next | Select I will install OS later, click Next | Choose VMware ESX, Choose version 5.x, 
+Click Next | Change location and choose anywhere and create a new folder | Click Next, don't change anything | Set 
+Memory to 8000 mb and Click Next | Click Next | Click Next | Click Next | Click Next | Choose storage as 80 GB, 
+Choose virtual disk into single file and Click Next | Choose the folder you created earlier and click Next | Click Finish | 
+Click Here | Choose ISO image | Browse the file | Click Ok | Click start virtual machine, it will take some time to start | 
+It will load | Press Enter | Press Enter | Enter password: siddhesh | Press F11 | The installation will take time | Press 
+Enter | Now, Go to Fullscreen and press F2 | Enter the login name: root and Password: siddhesh | After this, the 
+following screen will be displayed | Install VMware vSphere Client | The Installation will take some time | Open 
+vSphere Client | Enter the IP shown in the VMware Workstation and credentials (username: root and password: 
+siddhesh), Click Login | Click Ignore and this window will open | Click Inventory | Right click the IP and create new 
+virtual machine | Choose custom | Give name as Win7 | Click Next | Click Next | Select Windows 7 64 bit | Click Next 
+| Change Memory Size to 4GB | Click Next | Click Next | Click Next | Click Next | Click Next | Click Finish | Go to 
+summary tab | Right click on datastore1 | Create new folder and give name as ISOFiles | Click on ISOFiles and 
+Upload File… | Select Windows 7 ISO | Click Yes | It will take some time | Click Edit virtual machine and goto 
+CD/DVD | Select Datastore ISO | Click Browse > datastore1 > ISOFiles > win 7 iso | Select connect at power on | 
+Click power on virtual machine

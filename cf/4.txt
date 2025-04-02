@@ -1,0 +1,206 @@
+Sysinternals is a set of advanced system utilities and tools developed by Microsoft. It provides comprehensive insights into the internal workings of the Windows operating system.
+Installation
+Unzip the folder
+Procmon – Process Monitor
+Procmon - Process Monitor is an advanced monitoring tool for Windows that shows real-time file system, Registry and process/thread activity.
+Process and Thread Activity: Monitors processes and threads in real time. It shows detailed information like process name, process ID (PID), thread ID, start and end times, and more.
+File System Activity: Tracks all file system operations, such as file reads, writes, and deletions. This includes file path, access type (read, write, delete), and the process that triggered the operation.
+Registry Activity: Monitors registry keys and values being created, deleted, modified, or accessed. It can help track malware modifying system configurations or identify suspicious registry changes.
+Network Activity: Captures network activity, such as connections made by processes, along with the remote address and port numbers.
+Detailed Filtering: Procmon allows you to filter events based on process name, operation type, file path, registry key, and other parameters. This helps narrow down the relevant data and focus on suspicious activities.
+Real-time Monitoring: It provides real-time data on system activity, making it invaluable for detecting malicious behavior during live attacks or system compromises.
+Logging and Data Export: Procmon logs events and allows users to export data in various formats (CSV, XML) for further analysis or reporting.
+Filtering by Process ID (PID) in Procmon is useful for isolating the activity of a particular process, especially when investigating malware or specific software behavior. By applying a filter for Process ID, you can view the related file, registry, and network operations, making it easier to track and analyze specific actions.
+Listing processes whose path ends with ‘s’
+Processes whose path ends with 's'
+Show all processes captured before 4/1/2025 14:27:00
+Right click on the time and select Edit Filter…..
+You cannot directly get data from yesterday if you were not actively capturing it with Procmon during that time. If you did capture logs during yesterday, you can filter those logs by applying a date/time filter for that specific day.
+List process relate RegEdit operation (path contains HK)
+Display network, registry, file system, process and thread activity separately
+An Event Class refers to the category or type of system activity being logged.
+Network - The Network event class in Procmon captures events related to network activity on the system
+File System
+
+
+
+
+
+
+Registry
+
+
+
+
+
+
+Process
+
+
+
+
+
+
+Filter by process name
+
+
+
+
+
+
+Monitoring Notepad.exe process
+
+Create a file & write some text and save the file
+
+Change the font
+
+
+
+
+
+
+
+
+RAMMap
+Description
+RAMMap is a tool that helps forensic investigators analyze how a computer’s physical memory (RAM) is being used. It shows what files, processes, and system components are loaded into memory.
+Detect Suspicious Activity: Find unusual or hidden processes consuming memory, which may indicate malware.
+Analyze Cached Files: See which files are temporarily stored in memory, even if they weren’t saved to disk.
+Track Running Programs: Identify active software and their associated memory usage.
+Find Evidence of User Actions: Discover recently opened files or activities still in memory.
+Investigate System Behavior: Diagnose memory leaks or unusual memory allocations caused by malicious software.
+Limitations
+Only shows current memory usage (no historical data).
+Requires expertise to interpret the data effectively.
+Memory changes quickly, so evidence can be lost if not captured immediately.
+
+
+
+
+Use Counts - Shows how your computer’s memory is divided.
+
+Active memory: What’s being used right now. Standby memory: Ready to use if needed (cached). Modified memory: Changed but not saved to disk yet. Free memory: Not being used at all.
+Why it’s useful: Helps you see how much memory is free, used, or ready for immediate use.
+Processes
+
+What it does: Lists all the programs and processes running on your computer and shows how much memory each one uses.
+
+
+
+
+Why it’s useful: Helps you find programs that are using too much memory or behaving abnormally.
+Priority Summary
+
+What it does: Shows how the system decides which data to keep in memory (important vs. less important).
+Why it’s useful: Lets you see if critical processes are prioritized properly or if low-priority ones are hogging memory.
+Physical Pages
+
+
+
+
+
+What it does: Displays the actual memory blocks (pages) in your computer and what each one is used for.
+Why it’s useful: For deep troubleshooting when you need to analyze memory usage at the hardware level.
+Physical Ranges
+
+What it does: Shows the memory usage based on physical memory addresses (like sections of a bookshelf).
+
+
+
+
+Why it’s useful: Helps analyze how memory is physically divided on your computer.
+File Summary
+
+What it does: Lists all the files stored in memory (e.g., files you opened or cached files).
+Why it’s useful: Helps forensic investigators find files loaded into memory, even if they aren’t saved to the disk.
+File Details
+
+
+
+
+
+What it does: Provides a super-detailed view of memory usage for each file, like the exact parts of memory a file is using.
+Why it’s useful: Tracks suspicious or specific files in memory, especially in forensic cases.
+TCPView
+Description
+TCPView is designed to provide real-time information about the TCP and UDP activity on a Windows system. With TCPView, users can monitor and analyze the network connections established by various processes running on their computer.
+TCPView is a useful tool in forensic investigations, especially for tracking network activity and identifying suspicious or malicious connections. It provides real-time monitoring of TCP and UDP connections, showing details such as local and remote addresses, ports, and associated processes. Key ways it supports forensic investigations include:
+Monitoring Active Connections: Identifying unusual or unauthorized connections, including those with external malicious servers.
+Detecting Malicious Communication: Tracing connections to command-and- control servers used by malware.
+Identifying Unauthorized Processes: Highlighting suspicious processes making network connections.
+Reconstructing Attack Timeline: Tracking the sequence of connections to understand when and how a breach occurred.
+Analyzing Network Anomalies: Detecting signs of data exfiltration or attacks, such as unusual outbound traffic.
+Correlating with Other Forensic Tools: Supporting evidence gathering by integrating with other forensic methods.
+Legal Evidence: Providing clear, real-time connection data for building a chain of custody in legal proceedings.
+
+Green means “just opened,” yellow “ready to open,” red “ready to close,” and blue represents a user-selected entry.
+
+Indicates "ESTABLISHED" connections: A green line highlights a connection that is established and actively transmitting data between the local and remote systems.
+
+
+
+
+Meaning: When you see a green line, it means the TCP handshake was successful, and the connection is open and operational, with data flowing between the two systems. This is the normal state for a working network connection.
+Yellow Line:
+
+Indicates "LISTENING" connections: A yellow line typically represents a connection that is in the LISTENING state, meaning the local system is waiting for incoming connections on a specific port.
+Meaning: This state is common for servers or applications that are waiting for connections from clients. The yellow line draws attention to ports that are open and ready to accept new incoming connections.
+
+
+
+
+DiskMon
+DiskMon is a monitoring tool from Sysinternals (now part of Microsoft) that provides real-time monitoring of disk activity on a system. It helps track all disk input/output (I/O) operations and displays detailed information about every read and write request made to the disk.
+Forensic Investigation: It can be used to track file access and disk activity during an investigation. For example, if you suspect that a user or application accessed certain files, DiskMon can show you exactly when and what files were involved.
+Performance Analysis: If a system is running slow due to excessive disk activity, DiskMon can help you identify the exact process or file causing the issue, allowing for optimization or further action.
+File Access Auditing: DiskMon helps monitor file reads and writes, which could be useful for auditing file usage in a system. This can be valuable for compliance audits, security assessments, or investigating unauthorized file access.
+Tracking Malware Activity: Malware often accesses files or communicates with other systems through disk I/O operations. By using DiskMon, investigators can track suspicious disk operations and identify potentially malicious activity.
+
+
+
+
+
+Time: The timestamp when the disk operation occurred.
+Duration (s): The time taken for the disk operation. Disk: Which disk was accessed (e.g., Disk 0, Disk 1, etc.). Request: The type of I/O operation (Read/Write).
+Sector: The disk sector being accessed (which may correlate to file locations).
+Length: The number of bytes involved in the read or write operation.
+VMMap
+Description & formula
+VMMap is a process virtual and physical memory analysis utility. It shows a breakdown of a process's committed virtual memory types as well as the amount of physical memory (working set) assigned by the operating system to those types.
+VMMap provides a detailed map of how a program is using memory, including which data is currently in RAM and which is in virtual memory (disk).
+
+
+
+
+
+Committed memory is the amount of memory that the OS has set aside for the program to use, either in RAM or on the paging file (disk). This memory is guaranteed to be available for the program, but it doesn't necessarily have to be physically in RAM; if needed, it could be moved to virtual memory (on disk).
+Private Bytes refers to the total amount of memory that a process has allocated for exclusive use, and which is not shared with other processes.
+Working Set refers to the amount of memory (in RAM) that a process is currently using and actively working with.
+Cacheset tool
+The System File Cache is a mechanism in operating systems (such as Windows) that temporarily stores data from disk files in memory (RAM). Its purpose is to improve system performance by reducing the time it takes to access frequently used files and data.
+The System File Cache does not have a specific physical location on disk; instead, it resides in the system's RAM (Random Access Memory). It is a portion of memory dynamically allocated by the operating system to temporarily store recently accessed file data, including file contents and metadata.
+
+In the screenshot of the Cacheset tool, there are two main sections: Cache Information and Adjust Cache Settings. Here's a breakdown of the options and their purpose:
+
+
+
+
+
+Cache Information
+This section displays the current status of the System File Cache:
+Current Size:
+This shows the current size of the System File Cache in kilobytes (KB).
+In the example, the cache size is 24,524 KB (~24MB), which is the amount of memory currently being used by the cache.
+Peak Size:
+This shows the maximum size the System File Cache has reached during the current session or system runtime.
+In the example, the peak size is 404,004 KB (~404 MB), indicating the cache grew significantly at some point.
+Adjust Cache Settings
+This section allows you to set limits on the System File Cache's size:
+Working Set Minimum (KB):
+This specifies the minimum amount of memory that the operating system should reserve for the System File Cache.
+In the example, it is set to 1,024 KB (1 MB). The cache will not shrink below this size.
+Working Set Maximum (KB):
+This specifies the maximum amount of memory the System File Cache is allowed to use.
+In the example, it is set to -4 KB, which might indicate "no limit" (this behavior can depend on the tool version or system configuration).
+
+

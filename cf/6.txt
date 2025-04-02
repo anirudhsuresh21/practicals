@@ -1,0 +1,33 @@
+Prepare the System
+Clear browsing history from all browsers (since the trial version only displays the first 25 records).
+Download and Install
+Download and install Browser History Examiner on your system.
+Open the software.
+Capture Browser History
+Click File > Capture History.
+Click Next to proceed.
+Specify the location where the captured history should be saved.
+Click Capture to start the process.
+Generate New Browsing Data
+Open a web browser and search for something.
+A dialog box will appear automatically—click Yes to confirm capturing new history.
+The tool will now generate a history report.
+Load Captured History
+Click File > Load History.
+Select the capture folder where the history data was saved.
+The report preview will be displayed.
+Explore and Analyze
+Browse through the captured data.
+Examine different records, including visited websites, timestamps, and other browsing details.
+Export the Report
+Click File > Export > Export as HTML.
+Click Export to generate the HTML report.
+Open the exported HTML report in a web browser.
+Mark Important Records
+Identify key records in the report.
+Mark them with a star for reference.
+Save Report as PDF
+Click File > Report > Save as PDF.
+Choose a location and save the PDF report.
+Open and Review
+Open the saved PDF report to review the forensic findings.
