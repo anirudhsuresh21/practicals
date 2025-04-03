@@ -5,17 +5,23 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
+import scipy.cluster.hierarchy as shc  # For dendrogram
 
 # Load and prepare data
 data = pd.read_csv("diabetes.csv")
 
-# Convert categorical variables to numeric
-# data['famhist'] = data['famhist'].map({'Present': 1, 'Absent': 0})
-# data['chd'] = data['chd'].map({'Si': 1, 'No': 0})
-
 # Select numerical features for clustering
 features = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age', 'Outcome']
 X = StandardScaler().fit_transform(data[features])
+
+# Add Dendrogram visualization
+plt.figure(figsize=(10, 7))
+plt.title("Hierarchical Clustering Dendrogram")
+dend = shc.dendrogram(shc.linkage(X, method='ward'))
+plt.xlabel('Samples')
+plt.ylabel('Euclidean Distance')
+plt.axhline(y=15, color='r', linestyle='--')  # Draw a horizontal line for cluster separation
+plt.show()
 
 # Elbow Method
 inertias = [KMeans(n_clusters=k, random_state=42).fit(X).inertia_ for k in range(1, 11)]
