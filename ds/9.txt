@@ -1,0 +1,11 @@
+##To show current database
+>db
+
+##to show all database
+>show dbs
+
+##create database
+> use db_name
+
+##delete database
+>
