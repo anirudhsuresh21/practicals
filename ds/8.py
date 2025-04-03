@@ -1,79 +1,109 @@
-import numpy as np
 import pandas as pd
-from sklearn import metrics
-from sklearn.model_selection import GridSearchCV, cross_val_score, train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score
 import seaborn as sns
-from sklearn.ensemble import BaggingClassifier
-from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
-from sklearn.utils import resample
-from sklearn.ensemble import AdaBoostClassifier
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+from sklearn.impute import SimpleImputer
 
-# Load diabetes dataset
-df = pd.read_csv('diabetes.csv')
-print(df.head(10))
-print(df.info())
+data = pd.read_csv("Match.csv")
+print(data.head())
+print(data.columns)
+# data = data.drop(columns=['Date', 'Member_number'],inplace=True)
+# print(data.head())
+# print(data.columns)
+transactions = data.values.astype(str).tolist()
+transactions = [[item for item in row if item != 'nan'] for row in transactions]
+print(transactions[:10])
 
-# Prepare features and target
-X = df.drop('Outcome', axis=1)
-y = df['Outcome']
+te = TransactionEncoder()
+te_ary = te.fit(transactions).transform(transactions)
+df = pd.DataFrame(te_ary, columns=te.columns_)
+print(df.head(5))
+print(df.shape)
 
-# Split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+# Generate frequent itemsets
+frequent_itemsets = apriori(df, min_support=0.01, use_colnames=True)
+frequent_itemsets.count()['itemsets']
 
-# Create and train decision trees
-clf = DecisionTreeClassifier(max_depth=1, random_state=22)
-clf2 = DecisionTreeClassifier(random_state=22)
-clf = clf.fit(X_train, y_train)
-clf2 = clf2.fit(X_train, y_train)
-
-print("\nMetrics")
-y_pred = clf.predict(X_test)
-clf_accu = metrics.accuracy_score(y_test, y_pred)
-print(f"Accuracy: {clf_accu * 100:.2f}%")
-
-# Bagging
-estimator_range = [4,8,12,24,36]
-scores = []
-models = []
-for n_estimators in estimator_range:
-    bg = BaggingClassifier(estimator=clf2, n_estimators=n_estimators, random_state=22)
-    bg.fit(X_train, y_train)
-    models.append(bg)
-    scores.append(accuracy_score(y_true=y_test, y_pred=bg.predict(X_test)))
-
-plt.figure(figsize=(9,6))
-plt.plot(estimator_range, scores)
-plt.xlabel("n_estimators", fontsize=18)
-plt.ylabel("score", fontsize=18)
-plt.tick_params(labelsize=16)
-plt.show()
-print(f"\nAccuracy of 5th Bagging Model: {scores[4] * 100:.2f}%")
-
-# Bootstrapping
-accuracy = []
-n_iterations = 100
-for i in range(n_iterations):
-    X_bs, y_bs = resample(X_test, y_test, replace=True)
-    y_hat = models[4].predict(X_bs)
-    score = accuracy_score(y_bs, y_hat)
-    accuracy.append(score)
-
-sns.kdeplot(accuracy)
-plt.title("Accuracy across 100 bootstrap samples of the held-out test set")
-plt.xlabel("Accuracy")
+# Plotting
+# Plotting the barplot without the deprecation warning
+plt.figure(figsize=(12, 6))
+plt.xticks(rotation=90)
+colors = sns.color_palette("Set2", n_colors=15)  # Use a larger palette
+sns.barplot(x='itemsets', y='support', data=frequent_itemsets.nlargest(n=15, columns='support'),
+            palette=colors, hue='itemsets', legend=False)  # Set hue to itemsets
 plt.show()
 
-# Boosting
-ada = AdaBoostClassifier(estimator=clf, n_estimators=50, learning_rate=1.0, random_state=22)
-ada.fit(X_train, y_train)
-ada_accuracy = accuracy_score(y_test, ada.predict(X_test))
-print(f'\nAccuracy of the weak learner (Decision Tree): {clf_accu * 100:.2f}%')
-print(f'Accuracy of AdaBoost model: {ada_accuracy * 100:.2f}%')
 
-# Cross-Validation
-cv_scores = cross_val_score(clf2, X_train, y_train, cv=5, scoring='accuracy')
-print(f'\nCross-Validation Results (Accuracy): {cv_scores}')
-print(f'Mean Accuracy: {cv_scores.mean()}\n')
+# Association Rules
+rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1, num_itemsets=None)  # Add num_itemsets or use None
+rules.sort_values(by=['support'], ascending=False)
+print("RULES 1:\n", rules)
+
+rules["antecedent_len"] = rules["antecedents"].apply(lambda x: len(x))
+rules["consequent_len"] = rules["consequents"].apply(lambda x: len(x))
+print("RULES 2:\n", rules)
+
+# Filter rules based on antecedent_len
+print("RULES 3:\n", rules[rules['antecedent_len'] >= 2])
+
+# Apply additional filters for rule selection
+filtered_rules = rules[(rules['antecedent_len'] >= 2) &
+                        (rules['confidence'] > 0.3) &
+                        (rules['lift'] > 1)].sort_values(by=['lift', 'support'], ascending=False)
+print("RULES 4:\n", filtered_rules)
+
+# Filter based on consequent_len
+filtered_rules = rules[(rules['consequent_len'] >= 2) &
+                        (rules['lift'] > 1)].sort_values(by=['lift', 'confidence'], ascending=False)
+print("RULES 5:\n", filtered_rules)
+
+# Calculate Lift manually (if needed)
+rules['lift'] = rules['support'] / (rules['antecedent_len'] * rules['consequent_len'])
+print(rules)
+
+# Accuracy Metrics for different metrics
+print("---------------------ACCURACY METRICS-------------------------------")
+rules_lift = association_rules(frequent_itemsets, metric="lift", min_threshold=1, num_itemsets=None)
+print(rules_lift)
+rules_confidence = association_rules(frequent_itemsets, metric="confidence", min_threshold=1, num_itemsets=None)
+print(rules_confidence)
+rules_leverage = association_rules(frequent_itemsets, metric="leverage", min_threshold=1, num_itemsets=None)
+print(rules_leverage)
+rules_conviction = association_rules(frequent_itemsets, metric="conviction", min_threshold=1, num_itemsets=None)
+print(rules_conviction)
+
+
+# #FP Tree
+# print("FP Tree")
+
+# import pyfpgrowth
+# ##transactions = [[1, 2, 5],
+# ##                [2, 4],
+# ##                [2, 3],
+# ##                [1, 2, 4],
+# ##                [1, 3],
+# ##                [2, 3],
+# ##                [1, 3],
+# ##                [1, 2, 3, 5],
+# ##                [1, 2, 3]]
+
+# import csv
+# import pyfpgrowth
+
+# with open("Match.csv", encoding="utf8", newline='') as f:
+#     reader = csv.reader(f)
+#     data = list(reader)
+
+# for i in range(len(data)):
+#     if '' in data[i]:
+#         data[i] = [x for x in data[i] if x]
+        
+
+# data.pop(0)
+# print("some records",data[0:10])
+# patterns = pyfpgrowth.find_frequent_patterns(data, 3)
+# print("pattern",patterns)
+# print()
+# rules = pyfpgrowth.generate_association_rules(patterns, 0.8)
+# print("rules output",rules)

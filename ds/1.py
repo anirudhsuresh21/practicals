@@ -1,71 +1,83 @@
 import pandas as pd
 import numpy as np
 import seaborn as sns
-
+from sklearn.preprocessing import MinMaxScaler,StandardScaler
 import matplotlib.pyplot as plt
+from scipy.stats import chi2_contingency
 
-def preprocess_data(df):
-    """
-    Function to preprocess dataset with common cleaning operations
-    Args:
-        df: Input pandas DataFrame
-    Returns:
-        Cleaned DataFrame
-    """
-    # 1. Handling Missing Values
-    print("\n--- Missing Values Analysis ---")
-    print(df.isnull().sum())
+# load dataset
+df = pd.read_csv("updated_messy_data.csv")
+
+# find missing values
+print("Found missing values count")
+a=df.isnull().sum()
+print(df)
+print(a)
+
+#convert to int which is wrong data format
+def convert(value):
+    try:
+        return float(value)
+    except ValueError:
+        return np.nan
     
-    # Fill numeric columns with mean
-    numeric_columns = df.select_dtypes(include=[np.number]).columns
-    df[numeric_columns] = df[numeric_columns].fillna(df[numeric_columns].mean())
-    
-    # Fill categorical columns with mode
-    categorical_columns = df.select_dtypes(include=['object']).columns
-    for column in categorical_columns:
-        mode_value = df[column].mode()
-        if not mode_value.empty:  # Check if mode is not empty
-            df[column] = df[column].fillna(mode_value.iloc[0])
-        else:
-            print(f"Column '{column}' has no mode (all values may be NaN).")
+df['Age']=df['Age'].apply(convert)
+df['Salary']=df['Salary'].apply(convert)
 
-    # 2. Removing Duplicates
-    print("\n--- Duplicate Records ---")
-    print("Duplicates found:", df.duplicated().sum())
-    df = df.drop_duplicates()
+# handle missing data    
+df['Age'].fillna(df['Age'].mean(),inplace=True)
+df['Salary'].fillna(df['Salary'].mean(),inplace=True)
 
-    # 3. Handling Noisy Data
-    print("\n--- Noisy Data Analysis ---")
-    
-    # Box Plot for numeric columns
-    plt.figure(figsize=(10, 6))
-    df[numeric_columns].boxplot()
-    plt.title("Box Plot for Numeric Columns")
-    plt.xticks(rotation=45)
-    plt.show()
+#print after filling missing values
+print(df)
+print(df.isnull().sum())
 
-    # Remove outliers using IQR method
-    for column in numeric_columns:
-        Q1 = df[column].quantile(0.25)
-        Q3 = df[column].quantile(0.75)
-        IQR = Q3 - Q1
-        lower_bound = Q1 - 1.5 * IQR
-        upper_bound = Q3 + 1.5 * IQR
-        df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
+# drop dupes
+df.drop_duplicates(subset=['ID'],keep='first',inplace=True)
+print(df)
 
-    # Binning example for numeric columns
-    for column in numeric_columns:
-        if len(df[column].unique()) > 4:  # Only bin if there are enough unique values
-            try:
-                df[f'{column}_binned'] = pd.qcut(df[column], q=4, labels=['Q1', 'Q2', 'Q3', 'Q4'])
-            except ValueError:
-                print(f"Could not create bins for {column} due to distribution of values")
+#binning to remove noise data
+df['Experience_new']= pd.cut(df['Experience'],bins=[0,2,5,10],labels=['Juniors','Mid','Senior'])
+print(df)
 
-    print("\n--- Final Dataset Shape ---")
-    print(df.shape)
-    
-    return df
+#boxPlot
+plt.figure(figsize=[6,4])
+plt.boxplot(df['Performance_Score'],vert=False)
+plt.title("Performance Score Outliers")
+plt.show()
 
-# Example usage:
-df = pd.read_csv('titanic.csv')
-cleaned_df = preprocess_data(df)
+#interquartiles
+Q1 = df['Performance_Score'].quantile(0.25)
+Q3 = df['Performance_Score'].quantile(0.75) 
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+df = df[(df['Performance_Score'] >= lower_bound) & (df['Performance_Score'] <= upper_bound)]
+print(df)
+
+
+#scaling zscore and minmax
+scaler_minmax = MinMaxScaler()
+df[['Age','Salary']] = scaler_minmax.fit_transform(df[['Age','Salary']])
+print(df)
+
+scaler_zscore = StandardScaler()
+df[['Age','Salary']] = scaler_zscore.fit_transform(df[['Age','Salary']])
+print(df)
+
+
+#coorelation Heatmap
+num_dcol = df.select_dtypes(include=['number'])
+plt.figure(figsize=(8,6))
+sns.heatmap(num_dcol.corr(),annot=True,cmap='coolwarm',fmt='.2f')
+plt.title("Correlation Heatmap")
+plt.show()
+
+#chisquare test
+contingency_table= pd.crosstab(df['Experience_new'],df['Performance_Score'])
+chi2,p,dof,expected = chi2_contingency(contingency_table)
+print("Chisqaure resultt")
+print(chi2)
+print(p)
+print(dof)
+print(expected)

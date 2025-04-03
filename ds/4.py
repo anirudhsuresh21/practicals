@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 
 # Load your dataset
 # Replace 'your_data.csv' with your actual file path
-df = pd.read_csv('your_data.csv')
+df = pd.read_csv('Suicide-rates-master.csv')
 
 # Assuming your CSV has columns 'X' and 'y'
-X = df[['X']].values  # Independent variable
-y = df['y'].values    # Dependent variable
+X = df[['suicides_no']].values  # Independent variable
+y = df['gdp_per_capita ($)'].values    # Dependent variable
 
 # Rest of the code remains the same
 model = LinearRegression()
