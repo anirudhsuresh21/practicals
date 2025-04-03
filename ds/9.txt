@@ -1,11 +1,92 @@
-##To show current database
->db
+1.	Extract mongodb zip C:
+2.	Create the following directory
+c:>data>db
+3.	Goto C:\mongodb\bin and click on mongod.exe and keep server running
+4.	Click on mongo.exe
+5.	Write db to show current db
+●	db - test
+●	show dbs
+6.	Create DB Command
+●	use students
+●	db - students
+7.	Delete DB Command
+●	db.dropDatabase()
+●	Show dbs
+8.	Create Collection command
+●	Db.tech.insert({id:111, name:”john taylor”,age:30})
+WriteResult({ “nInserted” :1 })
 
-##to show all database
->show dbs
+9.	Command to check if the record was inserted
+●	db.tech.find()
+10.	Display Collections command
+●	Show collections – tech
+11.	Alternate command to create collection
+●	db.createCollection(“Interns”)
+●	Show Collections
+12.	Drop Collection Command
+●	 db.createCollection(“testers”)
+●	Show Collections
+●	db.testers.drop()
+●	Show collection
 
-##create database
-> use db_name
+13.	Creating a variable to insert multiple records
+Var newJobs = [
+	{
+	“Id”:113,
+	“Name”:”steve jobs”,
+	“Age”:26
+	},
+….add more…
+]
+14.	Inserting records
+●	db.tech.insert(newJobs)
+●	db.tech.find()
+15.	5 Records in “interns” collection
+●	db.interns.insert(internJobs)
+●	db.interns.find()
+16.	Querying in JSON format
+●	db.interns.find().pretty()
+	{
+	“Id”:113,
+	“Name”:”steve jobs”,
+	“Age”:26
+	“college”:”ruia”
+	},
+….add more…
+17.	Querying based on id
+●	 db.interns.find({“id”:215}).pretty()
+18.	Greater than query
+●	db.tech.find({“age”:{$gt:25}}).pretty()
+19.	Less than query
+●	db.tech.find({“age”:{$lt:26}}).pretty()
+20.	Not equal query
+●	db.tech.find({“id”:{$ne:215}}).pretty()
+21.	Update Query
+●	db.interns.update({“id”:215},{$set:{“Name”:”david”}})
+●	db.interns.find({“id”:215}).pretty()
+22.	Delete Query
+●	db.interns.find()
+●	 db.interns.remove({“id”:215})
+●	db.interns.find()
+23.	Only display a single column. Projection Command
+●	db.interns.find({},{“name”:1,_id:0})
+24.	AND join query
+●	db.interns.find({$and:[“id”:{$gt:213}},{“age”:{%lt:18}}]}).pretty()
+25.	Limit Command
+●	db.tech.find().limit(2).pretty()
+26.	Skip Command (See the difference between above output, it will skip 1 record and limit to 2 records)
+●	db.tech.find().limit(2).skip(1)pretty()
+27.	Sort in ascending order
+●	db.tech.find({},{_id:0,”name”:1,”age”:1}).sort({“age”:1})
+28.	Sort in descending order
+●	db.tech.find({},{_id:0,”name”:1,”age”:1}).sort({“age”:-1})
+29.	Create index command
+●	db.tech.createIndex({name:1})
+30.	Show indexes in a collection
+●	db.tech.getIndexes()
+31.	Drop Index
+●	db.tech.dropIndex({“name”:1})
+●	db.tech.getIndexes()
 
-##delete database
->
+ 
+

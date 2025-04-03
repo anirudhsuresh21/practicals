@@ -81,3 +81,8 @@ print(chi2)
 print(p)
 print(dof)
 print(expected)
+
+
+# Save cleaned data
+df.to_csv("cleaned_data1.csv", index=False)
+print("Data cleaning complete! Cleaned data saved as 'cleaned_data.csv'")
